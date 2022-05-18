@@ -10,13 +10,22 @@ import java.util.List;
 
 
 public class Main {
-    public static void main(String[] args) throws IOException, ParserConfigurationException, SAXException {
+    public static void main(String[] args) {
 
         SAXParserFactory factory = SAXParserFactory.newInstance();
-        SAXParser saxParser = factory.newSAXParser();
+        SAXParser saxParser = null;
+        try {
+            saxParser = factory.newSAXParser();
+        } catch (ParserConfigurationException | SAXException e) {
+            e.printStackTrace();
+        }
         CatalogHandler catalogHandler = new CatalogHandler();
 
-        saxParser.parse("src/main/resources/catalog.xml", catalogHandler);
+        try {
+            saxParser.parse("src/main/resources/catalog.xml", catalogHandler);
+        } catch (SAXException | IOException e) {
+            e.printStackTrace();
+        }
 
         List<Book> result = catalogHandler.getCatalog();
 
